@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Data URL Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .form-container {
+            background-color: rgba(26, 26, 26, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            width: 600px;
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        textarea {
+            height: 150px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            background-color: #333;
+            color: #ffffff;
+            transition: box-shadow 0.3s ease;
+        }
+        button:hover {
+            box-shadow: 0 0 10px 5px #4b0082;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>HTML Data URL Generator</h1>
+        <textarea id="htmlInput" placeholder="Enter HTML content"></textarea>
+        <button onclick="copyDataURL()">Copy Data URL</button>
+    </div>
+
+    <script>
+        let currentDataURL = '';
+
+        function generateDataURL() {
+            var htmlContent = document.getElementById("htmlInput").value.trim();
+            if (htmlContent) {
+                currentDataURL = "data:text/html;base64," + btoa(`
+                    <style>
+                        body {
+                            background-color: #1a1a1a;
+                            color: #ffffff;
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 20px;
+                        }
+                    </style>
+                    ${htmlContent}
+                `);
+            } else {
+                alert('No HTML content provided.');
+            }
+        }
+
+        function copyDataURL() {
+            generateDataURL(); // Generate the data URL before copying
+            if (currentDataURL) {
+                navigator.clipboard.writeText(currentDataURL).then(() => {
+                    alert('Data URL copied to clipboard.');
+                }).catch(err => {
+                    alert('Failed to copy Data URL.');
+                });
+            } else {
+                alert('No Data URL to copy.');
+            }
+        }
+    </script>
+</body>
+</html>
