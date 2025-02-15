@@ -2,7 +2,7 @@
 An exploit made for entertainment at school
 
 ## What is this?
-A "data url generator" is a generator that makes html into a long link so you could launch as an unblocked link
+A "data url generator" is exploit that can bypass extention blockers by making a long like based on your html code
 
 ### Example and Link:
 ```
