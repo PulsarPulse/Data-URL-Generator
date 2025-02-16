@@ -46,9 +46,25 @@
             background-color: #333;
             color: #ffffff;
             transition: box-shadow 0.3s ease;
+            margin-right: 10px;
         }
         button:hover {
             box-shadow: 0 0 10px 5px #4b0082;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .preview-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .preview-container iframe {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -56,7 +72,14 @@
     <div class="form-container">
         <h1>HTML Data URL Generator</h1>
         <textarea id="htmlInput" placeholder="Enter HTML content"></textarea>
-        <button onclick="copyDataURL()">Copy Data URL</button>
+        <div class="button-container">
+            <button onclick="copyDataURL()">Copy Data URL</button>
+            <button onclick="previewHTML()">Preview</button>
+            <button onclick="openInNewWindow()">Fullscreen</button>
+        </div>
+    </div>
+    <div class="preview-container" id="previewContainer">
+        <iframe id="previewFrame"></iframe>
     </div>
 
     <script>
@@ -92,6 +115,56 @@
                 });
             } else {
                 alert('No Data URL to copy.');
+            }
+        }
+
+        function previewHTML() {
+            generateDataURL(); // Generate the data URL before previewing
+            if (currentDataURL) {
+                var previewFrame = document.getElementById("previewFrame");
+                previewFrame.src = currentDataURL;
+            } else {
+                alert('No HTML content to preview.');
+            }
+        }
+
+        function openInNewWindow() {
+            generateDataURL(); // Generate the data URL before opening in new window
+            if (currentDataURL) {
+                const newWindow = window.open('about:blank', '_blank');
+                newWindow.document.open();
+                newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>HTML Viewer</title>
+                        <style>
+                            body {
+                                margin: 0;
+                                padding: 0;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                height: 100vh;
+                                background-color: #1a1a1a;
+                            }
+                            iframe {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${currentDataURL}"></iframe>
+                    </body>
+                    </html>
+                `);
+                newWindow.document.close();
+            } else {
+                alert('No HTML content to display.');
             }
         }
     </script>
